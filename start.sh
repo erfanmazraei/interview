@@ -4,7 +4,7 @@
 set -x
 
 export PROJECT_DIR="$HOME/project"
-export IP
+export IP="37.32.24.74"
 
 main () {
     pre_setup
@@ -19,6 +19,7 @@ main () {
 
 pre_setup () {
     apt update
+    apt install git
     mkdir -p $PROJECT_DIR
 }
 
@@ -39,7 +40,8 @@ get_and_apply_cert-manager () {
 }
 
 get_and_apply_cluster-issuer () {
-    kubectl apply -f .../cluster-issuer.yml
+    git clone https://github.com/erfanmazraei/interview.git
+    kubectl apply -f  interview/A/cluster-issuer.yml
 }
 
 setup_haproxy () {
@@ -52,25 +54,27 @@ get_ingress_nginx_http_and_https_port () {
 }
 
 config_and_restart_haproxy () {
-    echo "frontend site-http"
-    echo -e "\tmode tcp"
-    echo -e "\tbind :80"
-    echo -e "\tdefault_backend http_api_backend"
+    echo "frontend site-http" >> /etc/haproxy/haproxy.cfg
+    echo -e "\tmode tcp" >> /etc/haproxy/haproxy.cfg
+    echo -e "\tbind :80" >> /etc/haproxy/haproxy.cfg
+    echo -e "\tdefault_backend http_api_backend" >> /etc/haproxy/haproxy.cfg
 
-    echo "frontend site-https"
-    echo -e "\tmode tcp"
-    echo -e "\tbind :443"
-    echo -e "\tdefault_backend https_api_backend"
+    echo "frontend site-https" >> /etc/haproxy/haproxy.cfg
+    echo -e "\tmode tcp" >> /etc/haproxy/haproxy.cfg
+    echo -e "\tbind :443" >> /etc/haproxy/haproxy.cfg
+    echo -e "\tdefault_backend https_api_backend" >> /etc/haproxy/haproxy.cfg
 
-    echo "backend http_api_backend"
-    echo -e "\tmode tcp"
-    echo -e "\toption tcp-check"
-    echo -e "\tserver node1 $IP:$HTTP_PORT_NUMBER check"
+    echo "backend http_api_backend" >> /etc/haproxy/haproxy.cfg
+    echo -e "\tmode tcp" >> /etc/haproxy/haproxy.cfg
+    echo -e "\toption tcp-check" >> /etc/haproxy/haproxy.cfg
+    echo -e "\tserver node1 $IP:$HTTP_PORT_NUMBER check" >> /etc/haproxy/haproxy.cfg
 
-    echo "backend https_api_backend"
-    echo -e "\tmode tcp"
-    echo -e "\toption tcp-check"
-    echo -e "\tserver node1 $IP:$HTTPS_PORT_NUMBER check"   
+    echo "backend https_api_backend" >> /etc/haproxy/haproxy.cfg
+    echo -e "\tmode tcp" >> /etc/haproxy/haproxy.cfg
+    echo -e "\toption tcp-check" >> /etc/haproxy/haproxy.cfg
+    echo -e "\tserver node1 $IP:$HTTPS_PORT_NUMBER check" >> /etc/haproxy/haproxy.cfg
+
+    service restart haproxy
 }
 
 
