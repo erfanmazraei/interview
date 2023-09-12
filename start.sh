@@ -74,7 +74,7 @@ config_and_restart_haproxy () {
     echo -e "\toption tcp-check" >> /etc/haproxy/haproxy.cfg
     echo -e "\tserver node1 $IP:$HTTPS_PORT_NUMBER check" >> /etc/haproxy/haproxy.cfg
 
-    service restart haproxy
+    service haproxy restart
 }
 
 
