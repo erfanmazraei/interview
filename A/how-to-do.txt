@@ -1,0 +1,59 @@
+setup k8s :
+    execute these commands ( ubuntu 22 ):
+        sudo apt update
+        sudo apt install git python3 python3-pip -y
+        git clone https://github.com/kubernetes-incubator/kubespray.git
+        cd kubespray
+        pip install -r requirements.txt
+
+        cp -rfp inventory/sample inventory/mycluster
+        declare -a IPS=(ip1 ip2 ...)
+        CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
+
+        edit this file for determine master and worker and etcd nodes:
+            vi inventory/mycluster/hosts.yaml
+        
+        Review and modify the following parameters in file “inventory/mycluster/group_vars/k8s_cluster/k8s-cluster.yml”.
+            kube_version: v1.26.2
+            kube_network_plugin: calico
+            kube_pods_subnet: 10.233.64.0/18
+            kube_service_addresses: 10.233.0.0/18
+            cluster_name: linuxtechi.local
+
+        Copy SSH-keys from ansible node to all other nodes
+
+        run the following command on each node:
+            echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/ubuntu ( you must use same user in all k8s nodes and ansible node )
+
+        Disable Firewall and Enable IPV4 forwarding
+            cd kubespray
+            ansible all -i inventory/mycluster/hosts.yaml -m shell -a "sudo systemctl stop firewalld && sudo systemctl disable firewalld"
+
+        Run following ansible commands to enable IPv4 forwarding and disable swap on all the nodes
+            ansible all -i inventory/mycluster/hosts.yaml -m shell -a "echo 'net.ipv4.ip_forward=1' | sudo tee -a /etc/sysctl.conf"
+            ansible all -i inventory/mycluster/hosts.yaml -m shell -a "sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab && sudo swapoff -a"
+
+        Start Kubernetes deployment
+            cd kubespray
+            ansible-playbook -i inventory/mycluster/hosts.yaml --become --become-user=root cluster.yml
+
+        for connect to api-server component :
+            mkdir -p $HOME/.kube
+            sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+            sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+        then you must see nodes with execute this command :
+            kubectl get node
+
+setup nginx-ingress , haproxy , cert-manager , clusterissuer :
+    put your ip in this file :
+        start.sh
+        execute start.sh by sudo
+
+
+
+
+
+        
+        
+

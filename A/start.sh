@@ -27,7 +27,7 @@ download_and_install_helm () {
     cd $PROJECT_DIR
     wget https://get.helm.sh/helm-v3.6.3-linux-amd64.tar.gz
     tar -xvzf helm-v3.6.3-linux-amd64.tar.gz
-    chmod +x mv linux-amd64/helm
+    chmod +x linux-amd64/helm
     mv linux-amd64/helm /usr/bin/
 }
 
@@ -40,8 +40,8 @@ get_and_apply_cert-manager () {
 }
 
 get_and_apply_cluster-issuer () {
-    git clone https://github.com/erfanmazraei/interview.git
-    kubectl apply -f  interview/A/cluster-issuer.yml
+    git clone https://github.com/erfanmazraei/useful-k8s-manifest.git
+    kubectl apply -f  useful-k8s-manifest/cluster-issuer.yml
 }
 
 setup_haproxy () {
