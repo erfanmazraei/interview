@@ -18,8 +18,9 @@ main () {
 }
 
 pre_setup () {
-    apt update
-    apt install git
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update
+    apt-get install git -y
     mkdir -p $PROJECT_DIR
 }
 
@@ -45,7 +46,7 @@ get_and_apply_cluster-issuer () {
 }
 
 setup_haproxy () {
-    apt install haproxy -y
+    apt-get install haproxy -y
 }
 
 get_ingress_nginx_http_and_https_port () {
