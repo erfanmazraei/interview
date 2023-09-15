@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 main () {
     pre_setup
     setup_kubernetes
