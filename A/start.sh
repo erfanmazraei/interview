@@ -55,28 +55,29 @@ get_ingress_nginx_http_and_https_port () {
 }
 
 config_and_restart_haproxy () {
-    echo "frontend site-http" > $PROJECT_DIR/tmp.txt
-    echo -e "\tmode tcp" >> $PROJECT_DIR/tmp.txt
-    echo -e "\tbind :80" >> $PROJECT_DIR/tmp.txt
-    echo -e "\tdefault_backend http_api_backend" >> $PROJECT_DIR/tmp.txt
-    echo "frontend site-https" >> $PROJECT_DIR/tmp.txt
-    echo -e "\tmode tcp" >> $PROJECT_DIR/tmp.txt
-    echo -e "\tbind :443" >> $PROJECT_DIR/tmp.txt
-    echo -e "\tdefault_backend https_api_backend" >> $PROJECT_DIR/tmp.txt
-    echo "backend http_api_backend" >> $PROJECT_DIR/tmp.txt
-    echo -e "\tmode tcp" >> $PROJECT_DIR/tmp.txt
-    echo -e "\toption tcp-check" >> $PROJECT_DIR/tmp.txt
-    echo -e "\tserver node1 $IP:$HTTP_PORT_NUMBER check" >> $PROJECT_DIR/tmp.txt
-    echo "backend https_api_backend" >> $PROJECT_DIR/tmp.txt
-    echo -e "\tmode tcp" >> $PROJECT_DIR/tmp.txt
-    echo -e "\toption tcp-check" >> $PROJECT_DIR/tmp.txt
-    echo -e "\tserver node1 $IP:$HTTPS_PORT_NUMBER check" >> $PROJECT_DIR/tmp.txt
+    cat /etc/haproxy/haproxy.cfg > $PROJECT_DIR/haproxy.cfg
+    echo "frontend site-http" >> $PROJECT_DIR/haproxy.cfg
+    echo -e "\tmode tcp" >> $PROJECT_DIR/haproxy.cfg
+    echo -e "\tbind :80" >> $PROJECT_DIR/haproxy.cfg
+    echo -e "\tdefault_backend http_api_backend" >> $PROJECT_DIR/haproxy.cfg
+    echo "frontend site-https" >> $PROJECT_DIR/haproxy.cfg
+    echo -e "\tmode tcp" >> $PROJECT_DIR/haproxy.cfg
+    echo -e "\tbind :443" >> $PROJECT_DIR/haproxy.cfg
+    echo -e "\tdefault_backend https_api_backend" >> $PROJECT_DIR/haproxy.cfg
+    echo "backend http_api_backend" >> $PROJECT_DIR/haproxy.cfg
+    echo -e "\tmode tcp" >> $PROJECT_DIR/haproxy.cfg
+    echo -e "\toption tcp-check" >> $PROJECT_DIR/haproxy.cfg
+    echo -e "\tserver node1 $IP:$HTTP_PORT_NUMBER check" >> $PROJECT_DIR/haproxy.cfg
+    echo "backend https_api_backend" >> $PROJECT_DIR/haproxy.cfg
+    echo -e "\tmode tcp" >> $PROJECT_DIR/haproxy.cfg
+    echo -e "\toption tcp-check" >> $PROJECT_DIR/haproxy.cfg
+    echo -e "\tserver node1 $IP:$HTTPS_PORT_NUMBER check" >> $PROJECT_DIR/haproxy.cfg
 
-    sudo cat $PROJECT_DIR/tmp.txt >> /etc/haproxy/haproxy.cfg
-
+    sudo rm /etc/haproxy/haproxy.cfg
+    sudo chown root:root $PROJECT_DIR/haproxy.cfg
+    sudo cp $PROJECT_DIR/haproxy.cfg /etc/haproxy/
     sudo service haproxy restart
 
-    cd $HOME_DIR
 }
 
 
