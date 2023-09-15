@@ -76,7 +76,7 @@ config_and_restart_haproxy () {
 
     sudo service haproxy restart
 
-    cd HOME_DIR
+    cd $HOME_DIR
 }
 
 
