@@ -55,25 +55,24 @@ get_ingress_nginx_http_and_https_port () {
 }
 
 config_and_restart_haproxy () {
-    sudo echo "frontend site-http" >> /etc/haproxy/haproxy.cfg
-    sudo echo -e "\tmode tcp" >> /etc/haproxy/haproxy.cfg
-    sudo echo -e "\tbind :80" >> /etc/haproxy/haproxy.cfg
-    sudo echo -e "\tdefault_backend http_api_backend" >> /etc/haproxy/haproxy.cfg
+    echo "frontend site-http" > tmp.txt
+    echo -e "\tmode tcp" >> tmp.txt
+    echo -e "\tbind :80" >> tmp.txt
+    echo -e "\tdefault_backend http_api_backend" >> tmp.txt
+    echo "frontend site-https" >> tmp.txt
+    echo -e "\tmode tcp" >> tmp.txt
+    echo -e "\tbind :443" >> tmp.txt
+    echo -e "\tdefault_backend https_api_backend" >> tmp.txt
+    echo "backend http_api_backend" >> tmp.txt
+    echo -e "\tmode tcp" >> tmp.txt
+    echo -e "\toption tcp-check" >> tmp.txt
+    echo -e "\tserver node1 $IP:$HTTP_PORT_NUMBER check" >> tmp.txt
+    echo "backend https_api_backend" >> tmp.txt
+    echo -e "\tmode tcp" >> tmp.txt
+    echo -e "\toption tcp-check" >> tmp.txt
+    echo -e "\tserver node1 $IP:$HTTPS_PORT_NUMBER check" >> tmp.txt
 
-    sudo echo "frontend site-https" >> /etc/haproxy/haproxy.cfg
-    sudo echo -e "\tmode tcp" >> /etc/haproxy/haproxy.cfg
-    sudo echo -e "\tbind :443" >> /etc/haproxy/haproxy.cfg
-    sudo echo -e "\tdefault_backend https_api_backend" >> /etc/haproxy/haproxy.cfg
-
-    sudo echo "backend http_api_backend" >> /etc/haproxy/haproxy.cfg
-    sudo echo -e "\tmode tcp" >> /etc/haproxy/haproxy.cfg
-    sudo echo -e "\toption tcp-check" >> /etc/haproxy/haproxy.cfg
-    sudo echo -e "\tserver node1 $IP:$HTTP_PORT_NUMBER check" >> /etc/haproxy/haproxy.cfg
-
-    sudo echo "backend https_api_backend" >> /etc/haproxy/haproxy.cfg
-    sudo echo -e "\tmode tcp" >> /etc/haproxy/haproxy.cfg
-    sudo echo -e "\toption tcp-check" >> /etc/haproxy/haproxy.cfg
-    sudo echo -e "\tserver node1 $IP:$HTTPS_PORT_NUMBER check" >> /etc/haproxy/haproxy.cfg
+    sudo cat tmp.txt >> /etc/haproxy/haproxy.cfg
 
     sudo service haproxy restart
 
