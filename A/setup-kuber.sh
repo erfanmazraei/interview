@@ -23,3 +23,4 @@ setup_kubernetes () {
     ansible-playbook -i inventory/$CLUSTER_FOLDER/hosts.ini --connection=local -b -v cluster.yml
 }
 
+main
