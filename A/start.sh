@@ -2,8 +2,8 @@
 
 #set -e
 set -x
-
-export PROJECT_DIR="/home/ubuntu/project"
+export HOME_DIR="/home/ubuntu"
+export PROJECT_DIR="$HOME_DIR/project"
 export IP=""
 
 main () {

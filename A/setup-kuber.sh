@@ -2,6 +2,8 @@
 
 set -x
 
+export HOME_DIR="/home/ubuntu"
+
 main () {
     pre_setup
     setup_kubernetes
@@ -20,6 +22,7 @@ pre_setup () {
 }
 
 setup_kubernetes () {
+    cd $HOME_DIR
     git clone https://github.com/kubernetes-sigs/kubespray.git
     cd kubespray
     source venv/bin/activate || source envsp/bin/activate
@@ -34,6 +37,7 @@ move_config_file () {
     mkdir -p $HOME/.kube
     sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
     sudo chown $(id -u):$(id -g) $HOME/.kube/config
+    cd $HOME_DIR ##back
 }
 
 main
