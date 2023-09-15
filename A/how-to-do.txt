@@ -1,4 +1,4 @@
-setup k8s remote :
+ step 1 , setup k8s remote :
     execute these commands ( ubuntu 22 ):
         sudo apt update
         sudo apt install git python3 python3-pip -y
@@ -46,7 +46,7 @@ setup k8s remote :
             kubectl get node
 
 ###################################################################
-setup k8s local :
+step 1 , setup  k8s local :
     run the following command on each node by root user:
         echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/ubuntu
     run this script by ubuntu user :
@@ -55,11 +55,16 @@ setup k8s local :
 
 ###################################################################
 
-setup nginx-ingress , haproxy , cert-manager , clusterissuer :
+step 2 , setup nginx-ingress , haproxy , cert-manager , clusterissuer :
     put your ip in this file :
         start.sh
         execute start.sh :
             ./start.sh
+
+#####################################################################
+
+step 3 , deploy wordpress stack with helm chart :
+    execute setup-wordpress.sh
 
 
 
