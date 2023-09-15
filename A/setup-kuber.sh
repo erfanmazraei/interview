@@ -11,6 +11,7 @@ main () {
 }
 
 pre_setup () {
+    cd $HOME_DIR
     export DEBIAN_FRONTEND=noninteractive
     sudo apt-get update
     sudo apt-get install git -y
@@ -22,7 +23,6 @@ pre_setup () {
 }
 
 setup_kubernetes () {
-    cd $HOME_DIR
     git clone https://github.com/kubernetes-sigs/kubespray.git
     cd kubespray
     source venv/bin/activate || source envsp/bin/activate
