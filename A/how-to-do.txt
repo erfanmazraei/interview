@@ -58,8 +58,8 @@ setup k8s local :
 setup nginx-ingress , haproxy , cert-manager , clusterissuer :
     put your ip in this file :
         start.sh
-        execute start.sh by sudo
-            sudo ./start.sh
+        execute start.sh :
+            ./start.sh
 
 
 

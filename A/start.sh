@@ -22,10 +22,10 @@ pre_setup () {
     sudo apt-get update
     sudo apt-get install git -y
     mkdir -p $PROJECT_DIR
+    cd $PROJECT_DIR
 }
 
 download_and_install_helm () {
-    cd $PROJECT_DIR
     wget https://get.helm.sh/helm-v3.6.3-linux-amd64.tar.gz
     tar -xvzf helm-v3.6.3-linux-amd64.tar.gz
     chmod +x linux-amd64/helm
@@ -46,7 +46,7 @@ get_and_apply_cluster-issuer () {
 }
 
 setup_haproxy () {
-    apt-get install haproxy -y
+    sudo apt-get install haproxy -y
 }
 
 get_ingress_nginx_http_and_https_port () {
@@ -55,27 +55,27 @@ get_ingress_nginx_http_and_https_port () {
 }
 
 config_and_restart_haproxy () {
-    echo "frontend site-http" >> /etc/haproxy/haproxy.cfg
-    echo -e "\tmode tcp" >> /etc/haproxy/haproxy.cfg
-    echo -e "\tbind :80" >> /etc/haproxy/haproxy.cfg
-    echo -e "\tdefault_backend http_api_backend" >> /etc/haproxy/haproxy.cfg
+    sudo echo "frontend site-http" >> /etc/haproxy/haproxy.cfg
+    sudo echo -e "\tmode tcp" >> /etc/haproxy/haproxy.cfg
+    sudo echo -e "\tbind :80" >> /etc/haproxy/haproxy.cfg
+    sudo echo -e "\tdefault_backend http_api_backend" >> /etc/haproxy/haproxy.cfg
 
-    echo "frontend site-https" >> /etc/haproxy/haproxy.cfg
-    echo -e "\tmode tcp" >> /etc/haproxy/haproxy.cfg
-    echo -e "\tbind :443" >> /etc/haproxy/haproxy.cfg
-    echo -e "\tdefault_backend https_api_backend" >> /etc/haproxy/haproxy.cfg
+    sudo echo "frontend site-https" >> /etc/haproxy/haproxy.cfg
+    sudo echo -e "\tmode tcp" >> /etc/haproxy/haproxy.cfg
+    sudo echo -e "\tbind :443" >> /etc/haproxy/haproxy.cfg
+    sudo echo -e "\tdefault_backend https_api_backend" >> /etc/haproxy/haproxy.cfg
 
-    echo "backend http_api_backend" >> /etc/haproxy/haproxy.cfg
-    echo -e "\tmode tcp" >> /etc/haproxy/haproxy.cfg
-    echo -e "\toption tcp-check" >> /etc/haproxy/haproxy.cfg
-    echo -e "\tserver node1 $IP:$HTTP_PORT_NUMBER check" >> /etc/haproxy/haproxy.cfg
+    sudo echo "backend http_api_backend" >> /etc/haproxy/haproxy.cfg
+    sudo echo -e "\tmode tcp" >> /etc/haproxy/haproxy.cfg
+    sudo echo -e "\toption tcp-check" >> /etc/haproxy/haproxy.cfg
+    sudo echo -e "\tserver node1 $IP:$HTTP_PORT_NUMBER check" >> /etc/haproxy/haproxy.cfg
 
-    echo "backend https_api_backend" >> /etc/haproxy/haproxy.cfg
-    echo -e "\tmode tcp" >> /etc/haproxy/haproxy.cfg
-    echo -e "\toption tcp-check" >> /etc/haproxy/haproxy.cfg
-    echo -e "\tserver node1 $IP:$HTTPS_PORT_NUMBER check" >> /etc/haproxy/haproxy.cfg
+    sudo echo "backend https_api_backend" >> /etc/haproxy/haproxy.cfg
+    sudo echo -e "\tmode tcp" >> /etc/haproxy/haproxy.cfg
+    sudo echo -e "\toption tcp-check" >> /etc/haproxy/haproxy.cfg
+    sudo echo -e "\tserver node1 $IP:$HTTPS_PORT_NUMBER check" >> /etc/haproxy/haproxy.cfg
 
-    service haproxy restart
+    sudo service haproxy restart
 
     cd HOME_DIR
 }
