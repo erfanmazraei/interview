@@ -9,9 +9,9 @@ main () {
 
 pre_setup () {
     export DEBIAN_FRONTEND=noninteractive
-    apt-get update
-    apt-get install git -y
-    apt-get install python3-venv -y
+    sudo apt-get update
+    sudo apt-get install git -y
+    sudo apt-get install python3-venv -y
 }
 
 setup_kubernetes () {
