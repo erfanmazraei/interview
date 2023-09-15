@@ -1,4 +1,4 @@
- step 1 , setup k8s remote :
+ step 1 , setup k8s remote :  ( got to line 49 for local )
     execute these commands ( ubuntu 22 ):
         sudo apt update
         sudo apt install git python3 python3-pip -y
@@ -47,24 +47,27 @@
 
 ###################################################################
 step 1 , setup  k8s local :
-    run the following command on each node by root user:
+    run the following command on each node by root user: (i use ubuntu user)
         echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/ubuntu
-    run this script by ubuntu user :
-        ./setup-kuber.sh
+        apt-get update
+    then run this script by ubuntu user :
+        ./1-setup-kuber.sh
 
 
 ###################################################################
 
 step 2 , setup nginx-ingress , haproxy , cert-manager , clusterissuer :
-    put your ip in this file :
-        start.sh
-        execute start.sh :
-            ./start.sh
+    put your ip in this file in IP env:
+        2-provision-k8s.sh
+    execute 2-provision-k8s.sh :
+        ./2-provision-k8s.sh
 
 #####################################################################
 
 step 3 , deploy wordpress stack with helm chart :
-    execute setup-wordpress.sh
+    execute 3-setup-wordpress.sh
+
+####################################################################
 
 
 
