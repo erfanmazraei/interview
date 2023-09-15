@@ -3,8 +3,8 @@
 #set -e
 set -x
 
-export PROJECT_DIR="$HOME/project"
-export IP="37.32.24.74"
+export PROJECT_DIR="/home/ubuntu/project"
+export IP=""
 
 main () {
     pre_setup

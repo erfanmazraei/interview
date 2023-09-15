@@ -1,4 +1,4 @@
-setup k8s :
+setup k8s remote :
     execute these commands ( ubuntu 22 ):
         sudo apt update
         sudo apt install git python3 python3-pip -y
@@ -45,10 +45,23 @@ setup k8s :
         then you must see nodes with execute this command :
             kubectl get node
 
+###################################################################
+setup k8s local :
+    run the following command on each node by root user:
+        echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/ubuntu
+    run this script by ubuntu user :
+        ./setup-kuber.sh
+
+
+###################################################################
+
 setup nginx-ingress , haproxy , cert-manager , clusterissuer :
     put your ip in this file :
         start.sh
         execute start.sh by sudo
+            sudo ./start.sh
+
+
 
 
 
