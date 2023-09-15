@@ -55,24 +55,24 @@ get_ingress_nginx_http_and_https_port () {
 }
 
 config_and_restart_haproxy () {
-    echo "frontend site-http" > tmp.txt
-    echo -e "\tmode tcp" >> tmp.txt
-    echo -e "\tbind :80" >> tmp.txt
-    echo -e "\tdefault_backend http_api_backend" >> tmp.txt
-    echo "frontend site-https" >> tmp.txt
-    echo -e "\tmode tcp" >> tmp.txt
-    echo -e "\tbind :443" >> tmp.txt
-    echo -e "\tdefault_backend https_api_backend" >> tmp.txt
-    echo "backend http_api_backend" >> tmp.txt
-    echo -e "\tmode tcp" >> tmp.txt
-    echo -e "\toption tcp-check" >> tmp.txt
-    echo -e "\tserver node1 $IP:$HTTP_PORT_NUMBER check" >> tmp.txt
-    echo "backend https_api_backend" >> tmp.txt
-    echo -e "\tmode tcp" >> tmp.txt
-    echo -e "\toption tcp-check" >> tmp.txt
-    echo -e "\tserver node1 $IP:$HTTPS_PORT_NUMBER check" >> tmp.txt
+    echo "frontend site-http" > $PROJECT_DIR/tmp.txt
+    echo -e "\tmode tcp" >> $PROJECT_DIR/tmp.txt
+    echo -e "\tbind :80" >> $PROJECT_DIR/tmp.txt
+    echo -e "\tdefault_backend http_api_backend" >> $PROJECT_DIR/tmp.txt
+    echo "frontend site-https" >> $PROJECT_DIR/tmp.txt
+    echo -e "\tmode tcp" >> $PROJECT_DIR/tmp.txt
+    echo -e "\tbind :443" >> $PROJECT_DIR/tmp.txt
+    echo -e "\tdefault_backend https_api_backend" >> $PROJECT_DIR/tmp.txt
+    echo "backend http_api_backend" >> $PROJECT_DIR/tmp.txt
+    echo -e "\tmode tcp" >> $PROJECT_DIR/tmp.txt
+    echo -e "\toption tcp-check" >> $PROJECT_DIR/tmp.txt
+    echo -e "\tserver node1 $IP:$HTTP_PORT_NUMBER check" >> $PROJECT_DIR/tmp.txt
+    echo "backend https_api_backend" >> $PROJECT_DIR/tmp.txt
+    echo -e "\tmode tcp" >> $PROJECT_DIR/tmp.txt
+    echo -e "\toption tcp-check" >> $PROJECT_DIR/tmp.txt
+    echo -e "\tserver node1 $IP:$HTTPS_PORT_NUMBER check" >> $PROJECT_DIR/tmp.txt
 
-    sudo cat tmp.txt >> /etc/haproxy/haproxy.cfg
+    sudo cat $PROJECT_DIR/tmp.txt >> /etc/haproxy/haproxy.cfg
 
     sudo service haproxy restart
 
