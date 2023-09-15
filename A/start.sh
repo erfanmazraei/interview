@@ -19,8 +19,8 @@ main () {
 
 pre_setup () {
     export DEBIAN_FRONTEND=noninteractive
-    apt-get update
-    apt-get install git -y
+    sudo apt-get update
+    sudo apt-get install git -y
     mkdir -p $PROJECT_DIR
 }
 
@@ -29,7 +29,7 @@ download_and_install_helm () {
     wget https://get.helm.sh/helm-v3.6.3-linux-amd64.tar.gz
     tar -xvzf helm-v3.6.3-linux-amd64.tar.gz
     chmod +x linux-amd64/helm
-    mv linux-amd64/helm /usr/bin/
+    sudo mv linux-amd64/helm /usr/bin/
 }
 
 get_and_apply_bare_metal_nginx_ingress_controller () {
@@ -76,6 +76,8 @@ config_and_restart_haproxy () {
     echo -e "\tserver node1 $IP:$HTTPS_PORT_NUMBER check" >> /etc/haproxy/haproxy.cfg
 
     service haproxy restart
+
+    cd HOME_DIR
 }
 
 
