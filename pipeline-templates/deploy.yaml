@@ -1,0 +1,42 @@
+
+stages:
+- stage: deploy
+  jobs:
+  - job: deploy
+
+    pool: 
+      name: 'Default'
+
+    steps:
+    - task: SSH@0
+      inputs:
+        sshEndpoint: "root-rayankar"
+        runOptions: inline
+        inline: |
+          echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/ubuntu
+          export DEBIAN_FRONTEND=noninteractive
+          sudo apt-get update
+      displayName: "done : pre setup"
+
+    - task: SSH@0
+      inputs:
+        sshEndpoint: "ubuntu-rayankar"
+        runOptions: script
+        scriptPath: 'A/1-setup-kuber.sh'
+        workingDirectory: $(Agent.BuildDirectory)
+      displayName: "done : setup kuber with kubespray"
+
+    - task: SSH@0
+        sshEndpoint: "ubuntu-rayankar"
+        runOptions: script
+        scriptPath: 'A/2-provision-k8s.sh'
+        workingDirectory: $(Agent.BuildDirectory)
+      displayName: "done : setup ingress-nginx , cert-manager , clusterissuer , haproxy"
+
+    - task: SSH@0
+      inputs:11
+        sshEndpoint: "ubuntu-rayankar"
+        runOptions: script
+        scriptPath: 'A/3-setup-wordpress.sh'
+        workingDirectory: $(Agent.BuildDirectory)
+      displayName: "done : deploy app with helm "
